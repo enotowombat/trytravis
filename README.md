@@ -29,3 +29,12 @@ Host internalhost
  PermitLocalCommand yes
  LocalCommand ssh -t -A appuser@35.187.59.2 ssh 10.132.0.3
  ```
+# HW6
+
+### Добавляем startup script в создание инстанса
+
+gcloud compute instances create reddit-app-new \
+--boot-disk-size=10GB --image-family ubuntu-1604-lts \
+--image-project=ubuntu-os-cloud --machine-type=g1-small \
+--tags puma-server --restart-on-failure --zone=europe-west3-a \
+--metadata-from-file startup-script=startup.sh
