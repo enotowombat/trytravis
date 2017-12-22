@@ -43,5 +43,5 @@ gcloud compute instances create reddit-app-new \
 
 ### Создание шаблона с использованием перменных
 ``` $ packer build -var 'project_id=infra-188820' -var 
-'source_image_family=ubuntu-1604-lts' -var-file=variables.json ubuntu16.json
+'source_image_family=ubuntu-1604-lts' ubuntu16.json
 ```
