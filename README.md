@@ -38,3 +38,10 @@ gcloud compute instances create reddit-app-new \
 --image-project=ubuntu-os-cloud --machine-type=g1-small \
 --tags puma-server --restart-on-failure --zone=europe-west3-a \
 --metadata-from-file startup-script=startup.sh
+
+# HW7
+
+### Создание шаблона с использованием перменных
+``` $ packer build -var 'project_id=infra-188820' -var 
+'source_image_family=ubuntu-1604-lts' -var-file=variables.json ubuntu16.json
+```
