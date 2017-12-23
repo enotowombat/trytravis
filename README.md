@@ -45,3 +45,6 @@ gcloud compute instances create reddit-app-new \
 ``` $ packer build -var 'project_id=infra-188820' -var 
 'source_image_family=ubuntu-1604-lts' -var-file=variables.json ubuntu16.json
 ```
+# HW8
+
+### Terraform. Homework 8
