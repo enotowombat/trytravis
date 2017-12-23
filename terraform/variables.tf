@@ -19,10 +19,6 @@ variable disk_image {
   description = "Disk image"
 }
 
-variable provider_version {
-  description = "Google provider version"
-}
-
 variable zone {
   description = "Compute instance zone"
   default     = "europe-west1-b"
