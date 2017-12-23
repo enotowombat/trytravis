@@ -1,0 +1,43 @@
+2017/12/23 13:29:15 [INFO] Terraform version: 0.11.1  a42fdb08a43c7fabb8898fe8c286b793bbaa4835+CHANGES
+2017/12/23 13:29:15 [INFO] Go runtime version: go1.9
+2017/12/23 13:29:15 [INFO] CLI args: []string{"/usr/bin/terraform", "plan"}
+2017/12/23 13:29:15 [DEBUG] Attempting to open CLI config file: /home/ubuntu/.terraformrc
+2017/12/23 13:29:15 [DEBUG] File doesn't exist, but doesn't need to. Ignoring.
+2017/12/23 13:29:15 [INFO] CLI command args: []string{"plan"}
+2017/12/23 13:29:15 [INFO] command: empty terraform config, returning nil
+2017/12/23 13:29:15 [DEBUG] command: no data state file found for backend config
+2017/12/23 13:29:15 [DEBUG] New state was assigned lineage "c993db02-d5b1-4021-a0e5-a238548514cc"
+2017/12/23 13:29:15 [INFO] command: backend initialized: <nil>
+2017/12/23 13:29:15 [DEBUG] checking for provider in "."
+2017/12/23 13:29:15 [DEBUG] checking for provider in "/usr/bin"
+2017/12/23 13:29:15 [DEBUG] checking for provider in ".terraform/plugins/linux_amd64"
+2017/12/23 13:29:15 [DEBUG] found provider "terraform-provider-google_v1.4.0_x4"
+2017/12/23 13:29:15 [DEBUG] found valid plugin: "google"
+2017/12/23 13:29:15 [DEBUG] checking for provisioner in "."
+2017/12/23 13:29:15 [DEBUG] checking for provisioner in "/usr/bin"
+2017/12/23 13:29:15 [DEBUG] checking for provisioner in ".terraform/plugins/linux_amd64"
+2017/12/23 13:29:15 [INFO] command: backend <nil> is not enhanced, wrapping in local
+2017/12/23 13:29:15 [INFO] backend/local: starting Plan operation
+2017/12/23 13:29:15 [TRACE] Preserving existing state lineage "acc6c46d-ea7b-44d3-b4a5-738e083ddf9c"
+2017/12/23 13:29:15 [TRACE] Preserving existing state lineage "acc6c46d-ea7b-44d3-b4a5-738e083ddf9c"
+panic: Malformed constraint: ${var.provider_version}
+
+goroutine 75 [running]:
+github.com/hashicorp/terraform/plugin/discovery.ConstraintStr.MustParse(0xc420310820, 0x17, 0xc4201139c8, 0x0, 0xc420430060)
+	/opt/gopath/src/github.com/hashicorp/terraform/plugin/discovery/version_set.go:28 +0x80
+github.com/hashicorp/terraform/terraform.moduleTreeConfigDependencies(0xc420107000, 0x0, 0x0)
+	/opt/gopath/src/github.com/hashicorp/terraform/terraform/module_dependencies.go:62 +0x265
+github.com/hashicorp/terraform/terraform.ModuleTreeDependencies(0xc420107000, 0xc420408840, 0xc420359fb0)
+	/opt/gopath/src/github.com/hashicorp/terraform/terraform/module_dependencies.go:23 +0x34
+github.com/hashicorp/terraform/terraform.NewContext(0xc4202eba20, 0xc420408840, 0x0, 0x3bb1680)
+	/opt/gopath/src/github.com/hashicorp/terraform/terraform/context.go:189 +0x1fd
+github.com/hashicorp/terraform/backend/local.(*Local).context(0xc4202eb8c0, 0xc4200dcc00, 0x2, 0x2, 0x3, 0xc420353540, 0x2)
+	/opt/gopath/src/github.com/hashicorp/terraform/backend/local/backend_local.go:64 +0x751
+github.com/hashicorp/terraform/backend/local.(*Local).opPlan(0xc4202eb8c0, 0x3bad860, 0xc420010060, 0xc4200dcc00, 0xc420358960)
+	/opt/gopath/src/github.com/hashicorp/terraform/backend/local/backend_plan.go:58 +0x21c
+github.com/hashicorp/terraform/backend/local.(*Local).(github.com/hashicorp/terraform/backend/local.opPlan)-fm(0x3bad860, 0xc420010060, 0xc4200dcc00, 0xc420358960)
+	/opt/gopath/src/github.com/hashicorp/terraform/backend/local/backend.go:232 +0x52
+github.com/hashicorp/terraform/backend/local.(*Local).Operation.func1(0xc4202eb8c0, 0xc420360680, 0xc420360670, 0x3bad860, 0xc420010060, 0xc4200dcc00, 0xc420358960)
+	/opt/gopath/src/github.com/hashicorp/terraform/backend/local/backend.go:254 +0x9a
+created by github.com/hashicorp/terraform/backend/local.(*Local).Operation
+	/opt/gopath/src/github.com/hashicorp/terraform/backend/local/backend.go:251 +0x18a
