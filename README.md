@@ -45,3 +45,6 @@ gcloud compute instances create reddit-app-new \
 ``` $ packer build -var 'project_id=infra-188820' -var 
 'source_image_family=ubuntu-1604-lts' ubuntu16.json
 ```
+### Готовим полный образ
+Шаблон immutable.json готовит полный образ reddit-full, остается только создать и запустить инстанс
+Скрипт для создания и запуска create-reddit-vm.sh
