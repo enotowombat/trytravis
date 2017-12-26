@@ -1,0 +1,14 @@
+
+{
+  "variables": 
+    {
+      "project_id": "infra-188820",
+      "source_image_family": "ubuntu-1604-lts",
+      "machine_type": "f1-micro",
+      "disk_type": "pd-standard",
+      "image_description": "image for homework 7",
+      "image_family": "reddit-base",
+      "image_name": "reddit-base-{{timestamp}}",
+      "network": "default_network"
+    }
+}
