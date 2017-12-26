@@ -9,7 +9,4 @@ bundle install
 
 sudo mv /tmp/puma.service /etc/systemd/system/puma.service
 sudo systemctl start puma
-sudo systemctl enable puma#!/bin/bash
-git clone https://github.com/Otus-DevOps-2017-11/reddit.git
-cd reddit && bundle install
-puma -d
+sudo systemctl enable puma
