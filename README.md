@@ -38,3 +38,18 @@ gcloud compute instances create reddit-app-new \
 --image-project=ubuntu-os-cloud --machine-type=g1-small \
 --tags puma-server --restart-on-failure --zone=europe-west3-a \
 --metadata-from-file startup-script=startup.sh
+
+# HW7
+
+### Создание шаблона с использованием перменных
+``` $ packer build -var 'project_id=infra-188820' -var 
+'source_image_family=ubuntu-1604-lts' -var-file=variables.json ubuntu16.json
+```
+# HW8
+
+### Terraform. Homework 8
+
+###*
+- В metadata проекта добавлен ssh-keys(потому что sshKeys deprecated) для appuser1 - для appuser1 все ок
+- В ssh-keys к appuser1 добавлен appuser2 - сначала access denied для appuser2, может потому что был пробел между ключами в metadata resource, убрал, все ок для обоих пользователей
+- В вебиннтерфйсе добавлен ключ для appuser_web, для всех пользователй вс ок. После terraform apply ключ appuser_web удаляется, потому что "If you have existing project-wide keys, any keys that you do not include in your list will be removed"
