@@ -41,15 +41,20 @@ gcloud compute instances create reddit-app-new \
 
 # HW7
 
-### Создание шаблона с использованием перменных
-``` $ packer build -var 'project_id=infra-188820' -var 
-'source_image_family=ubuntu-1604-lts' -var-file=variables.json ubuntu16.json
-```
+### Создание шаблона с использованием переменных
+Передаем обязательные переменные в командной строке:
+$ packer build -var 'project_id=infra-188820' -var 'source_image_family=ubuntu-1604-lts' ubuntu16.json
+Передам переменные в файле:
+$ packer build -var-file=variables.json.example ubuntu16.json
+
+### Готовим полный образ
+Шаблон immutable.json готовит полный образ reddit-full, остается только создать и запустить инстанс
+Скрипт для создания и запуска create-reddit-vm.sh
+
 # HW8
 
 ### Terraform. Homework 8
 
-###*
 - В metadata проекта добавлен ssh-keys(потому что sshKeys deprecated) для appuser1 - для appuser1 все ок
 - В ssh-keys к appuser1 добавлен appuser2 - сначала access denied для appuser2, может потому что был пробел между ключами в metadata resource, убрал, все ок для обоих пользователей
 - В вебиннтерфйсе добавлен ключ для appuser_web, для всех пользователй вс ок. После terraform apply ключ appuser_web удаляется, потому что "If you have existing project-wide keys, any keys that you do not include in your list will be removed"
