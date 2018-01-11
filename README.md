@@ -58,3 +58,20 @@ $ packer build -var-file=variables.json.example ubuntu16.json
 - В metadata проекта добавлен ssh-keys(потому что sshKeys deprecated) для appuser1 - для appuser1 все ок
 - В ssh-keys к appuser1 добавлен appuser2 - сначала access denied для appuser2, может потому что был пробел между ключами в metadata resource, убрал, все ок для обоих пользователей
 - В вебиннтерфйсе добавлен ключ для appuser_web, для всех пользователй вс ок. После terraform apply ключ appuser_web удаляется, потому что "If you have existing project-wide keys, any keys that you do not include in your list will be removed"
+
+### Terraform. Homework 8. Задание со звездочкой **
+1. Добавлено:
+- global_forwarding_rule
+- target_http_proxy
+- url_map
+- backend_service
+- http_health_check
+- instance_group c одним инстансом, уже созданным
+- адрес балансера в output
+Не добавлено (согласно заданию, но против стандартного подхода):
+- instance_group_manager
+- instance_template
+Приложение доступно по адресу балансировщика. 
+Но, при периодичских изменениях и обратных изменениях и применениях main.tf, на тех же параметрах приложение может быть как доступно, так и недоступно (502). Не работает -> поменять что-нибудь -> не работает -> поменять обратно -> работает. Время между проверками было больше, чем (интервал + таймаут)*2 в healh_check. Закоммичен вариант, при котором доступность приложения была
+2. Добавлен второй инстанс и его адрес в output. При остановке одного из приложений все запросы отправляются на второй, сервис доступен
+Недостаток конфигурации видимо в отсутствии autoscaling со всеми его преимуществами, необходимости вручную прописывать каждый инстанс
