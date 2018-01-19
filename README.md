@@ -105,3 +105,57 @@ $ packer build -var-file=variables.json.example ubuntu16.json
 
 6. Реестр модулей
 Бакеты созданы с уникальными именами
+
+
+# HW 11
+
+### Homework 11. Ansible-2
+
+Задачи по инструкции пройдены
+
+### Исследование Dynamic Inventory
+
+Используем стандартное решение Ansible: `gce.py`
+1. Подготавливаем:
+- `$ wget https://raw.githubusercontent.com/ansible/ansible/devel/contrib/inventory/gce.py`
+- `$ wget https://raw.githubusercontent.com/ansible/ansible/devel/contrib/inventory/gce.ini`
+- `$ chmod +x gce.py`
+- Создаем GCE OAuth2 Service Account, генерим ключ, конвертим pkcs12 в pem: `$ openssl pkcs12 -in key.p12 -passin pass:notasecret -nodes -nocerts | openssl rsa -out pkey.pem`
+- Ставим libcloud: `$ sudo easy_install apache-libcloud`
+- Заполняем `gce.ini`
+2. Проверяем: 
+- Проверка работы скрипта: 
+`$ ./gce.py --list --pretty`. Получаем все параметры инстансов в json
+`$ ./gce.py --host reddit-db --pretty`. Получаем значение переменных конкретного хоста 
+- Проверка работы Dynamic Inventory: 
+Для всех хостов
+`$ ansible all -i gce.py -m ping`
+`reddit-app | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+reddit-db | SUCCESS => {
+    "changed": false,
+    "ping": "pong"`
+Для конкретного хоста и переменной
+`$ ansible reddit-db -i gce.py -m command -a "echo {{ gce_private_ip }}"`
+`reddit-db | SUCCESS | rc=0 >>
+10.132.0.2`
+3. Используем dynamic inventory в готовых плейбуках
+- В качестве групп хостов используем переменные `tag_reddit-app` и `tag_reddit-db`. Перменные создаются автоматически по тэгам образов (которые у нас фактически определяют группу) при вызовах ансиблом `gce.py --host`. В нашем случае можно считать аналогом групп хостов из статического inventory. Меняем в плейбуках группы. `db.yml`: `hosts`: `tag_reddit-db`, `app.ml`: `hosts`: `tag_reddit-app`, `deploy.yml`: `hosts`: `tag_reddit-app`
+- Меняем статически определенные ip на динамически создаваемую переменную `gce_private_ip`. `app.yml`: `db_host`: `"{{ hostvars['reddit-db']['gce_private_ip'] }}"`, `db_host`: `mongo_bind_ip`: `"{{ gce_private_ip }}"` - лучше ограничить подключения только локальной сетью
+- Проверяем
+`$ ansible-playbook -i gce.py site.yml --check`
+Уничтожаем все ресурсы, создаем без базы и приложения
+`$ ansible-playbook -i gce.py site.yml`
+Работает
+
+### Дополнение к предыдущему заданию HW9 terraform-2. Переход на шаблоны
+Менять кофиги sed'ом не очень хорошо, использовать templates хорошо. Переходим на terraform templates 
+1. **puma**
+Создаем шаблон `templates/puma.service.tpl`
+В `app/main.tf` добавляем template, меняем в провиженерах sed на шаблон (с подставленным db_address), остальные провиженеры тоже немного поменялись
+2. **mongod** 
+Создаем шаблон `templaes/mongod.conf.tpl`
+В `db/main.tf` добавляем template, меняем в провиженерах sed на шаблон (с подставленным bindIp=0.0.0.0), остальные провиженеры тоже немного поменялись
+Похоже, что terraform не может использовать в шаблоне переменные, вычисляемые при создании того же ресурса, к которому этот шаблон относится, передать в шаблон локальный адрес хоста базы для bindIp не получилось. Вписал 0.0.0.0, но если хост доступен из интернета, разрешать все подключения к mongo не хорошо.
