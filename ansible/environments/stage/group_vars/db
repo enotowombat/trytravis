@@ -1,0 +1,1 @@
+mongo_bind_ip: "{{ gce_private_ip }}"
