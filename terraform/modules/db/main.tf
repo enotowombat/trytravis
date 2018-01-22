@@ -1,3 +1,11 @@
+data "template_file" "mongod_conf" {
+  template = "${file("${path.module}/templates/mongod.conf.tpl")}"
+
+  vars {
+    bind_ip = "0.0.0.0"
+  }
+}
+
 resource "google_compute_instance" "db" {
   name         = "reddit-db"
   machine_type = "g1-small"
@@ -26,11 +34,15 @@ resource "google_compute_instance" "db" {
     private_key = "${file(var.private_key_path)}"
   }
 
+  provisioner "file" {
+    content     = "${data.template_file.mongod_conf.rendered}"
+    destination = "/tmp/mongod.conf"
+  }
+
   provisioner "remote-exec" {
     inline = [
-      "sudo sed -i '/bindIp:/s/127.0.0.1/127.0.0.1,${google_compute_instance.db.network_interface.0.address}/' /etc/mongod.conf",
-      "sudo systemctl daemon-reload",
-      "sudo systemctl restart mongod",
+      "sudo mv /tmp/mongod.conf /etc/mongod.conf",
+      "sudo systemctl restart mongod"
     ]
   }
 }

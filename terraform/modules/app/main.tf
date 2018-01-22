@@ -1,3 +1,11 @@
+data "template_file" "puma_service" {
+  template = "${file("${path.module}/templates/puma.service.tpl")}"
+
+  vars {
+    db_address = "${var.db_internal_ip}"
+  }
+}
+
 resource "google_compute_instance" "app" {
   name         = "reddit-app"
   machine_type = "g1-small"
@@ -29,21 +37,15 @@ resource "google_compute_instance" "app" {
     private_key = "${file(var.private_key_path)}"
   }
 
+
   provisioner "file" {
-    source      = "../modules/app/files/puma.service"
+    content     = "${data.template_file.puma_service.rendered}"
     destination = "/tmp/puma.service"
   }
 
-  provisioner "remote-exec" {
-    script = "../modules/app/files/deploy.sh"
-  }
 
   provisioner "remote-exec" {
-    inline = [
-      "sudo sed -i '/\\[Service\\]/ a Environment=DATABASE_URL=${var.db_internal_ip}' /etc/systemd/system/puma.service",
-      "sudo systemctl daemon-reload",
-      "sudo systemctl restart puma",
-    ]
+    script = "../modules/app/files/deploy.sh"
   }
 }
 
