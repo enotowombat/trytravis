@@ -1,9 +1,9 @@
-terraform {
-  backend "gcs" {
-    bucket = "remote-backend"
-    prefix = "prod"
-  }
-}
+#terraform {
+#  backend "gcs" {
+#    bucket = "remote-backend"
+#    prefix = "prod"
+#  }
+#}
 
 provider "google" {
   version = "1.4.0"

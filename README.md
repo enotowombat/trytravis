@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Otus-DevOps-2017-11/enotowombat_infra.svg?branch=ansible-3)](https://travis-ci.org/Otus-DevOps-2017-11/enotowombat_infra)
 # HW5
 
 ### Hosts:
@@ -159,3 +160,18 @@ reddit-db | SUCCESS => {
 Создаем шаблон `templaes/mongod.conf.tpl`
 В `db/main.tf` добавляем template, меняем в провиженерах sed на шаблон (с подставленным bindIp=0.0.0.0), остальные провиженеры тоже немного поменялись
 Похоже, что terraform не может использовать в шаблоне переменные, вычисляемые при создании того же ресурса, к которому этот шаблон относится, передать в шаблон локальный адрес хоста базы для bindIp не получилось. Вписал 0.0.0.0, но если хост доступен из интернета, разрешать все подключения к mongo не хорошо.
+
+
+# HW12
+
+### Homework 12. Ansible-3
+
+Задачи по инструкции пройдены
+
+### Использование Dynamic Inventory
+- помещаем `gce.py`, `gce.ini` в stage и prod
+- меняем названия групп `app` и `db` на `tag_reddit-app` и `tag_reddit-db` (в `global_vars`, `app.yml`, `db.yml`, `deploy.yml`)
+- меняем конкретные ip в `global_vars` на переменные. `mongo_bind_ip: "{{ gce_private_ip }}"`. `db_host: "{{ hostvars['reddit-db']['gce_private_ip'] }}"`
+- Проверяем, `ansible-playbook -i environments/stage/gce.py playbooks/site.yml --check`, применяем
+- Приложение доступно
+
