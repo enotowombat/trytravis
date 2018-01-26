@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Otus-DevOps-2017-11/enotowombat_infra.svg?branch=ansible-3)](https://travis-ci.org/Otus-DevOps-2017-11/enotowombat_infra)
+[![Build Status](https://travis-ci.org/Otus-DevOps-2017-11/enotowombat_infra.svg?branch=master)](https://travis-ci.org/Otus-DevOps-2017-11/enotowombat_infra)
 # HW5
 
 ### Hosts:
@@ -175,3 +175,8 @@ reddit-db | SUCCESS => {
 - Проверяем, `ansible-playbook -i environments/stage/gce.py playbooks/site.yml --check`, применяем
 - Приложение доступно
 
+### Задание со ** TravisCI
+Чтобы не забивать репозиторий кучй коммитов, сделал еще один спциально для тестов, потом скопировал оттуда изменения и проверил
+Сделал `.travis.yml`
+На время тестов закомментировал использование remote state в terraform, у travis нет доступа к стейту, потом вернул обратно
+Статус билда в README копируем из Travis
