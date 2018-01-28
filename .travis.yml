@@ -7,6 +7,7 @@ python: "2.7"
 
 branches:
   only:
+    - master
     - ansible-3
 
 before_install:
@@ -26,19 +27,10 @@ install:
   - pip install ansible-lint
 
 before_script:
-  - /home/travis/bin/packer --version
   - WD=$(pwd)
-  - touch ~/.ssh/appuser.pub && touch ~/.ssh/appuser
-  - cd ${WD}/terraform/stage
-  - |
-    cat > ./terraform.tfvars << '  EOF'
-    project = "infra-188820"
-    public_key_path = "~/.ssh/appuser.pub"
-    private_key_path = "~/.ssh/appuser"
-    disk_image = "reddit-base"
-    EOF
-  - cat ./terraform.tfvars
-  - cp ./terraform.tfvars ../prod/
+  - touch ~/.ssh/user.pub && touch ~/.ssh/user
+  - rm terraform/stage/backend.tf
+  - rm terraform/prod/backend.tf
 
 script:
   - cd ${WD}
@@ -48,9 +40,9 @@ script:
   - ansible-lint playbooks/site.yml
   - cd ${WD}/terraform/stage
   - terraform init
-  - terraform validate
-  - tflint --error-with-issues
+  - terraform validate -var-file=terraform.tfvars.example
+  - tflint --error-with-issues --var-file=terraform.tfvars.example
   - cd ${WD}/terraform/prod
   - terraform init
-  - terraform validate
-  - tflint --error-with-issues 
+  - terraform validate -var-file=terraform.tfvars.example
+  - tflint --error-with-issues --var-file=terraform.tfvars.example

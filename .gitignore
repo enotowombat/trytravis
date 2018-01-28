@@ -4,3 +4,6 @@
 *.tfvars
 .terraform/
 variables.json
+*.save
+*.swp
+jdauphant.nginx

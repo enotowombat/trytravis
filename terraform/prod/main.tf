@@ -1,10 +1,3 @@
-terraform {
-  backend "gcs" {
-    bucket = "remote-backend"
-    prefix = "prod"
-  }
-}
-
 provider "google" {
   version = "1.4.0"
   project = "${var.project}"
