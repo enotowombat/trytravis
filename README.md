@@ -193,3 +193,11 @@ reddit-db | SUCCESS => {
 На время тестов закомментировал использование remote state в terraform, у travis нет доступа к стейту, потом вернул обратно
 Статус билда в README копируем из Travis
 
+### Доработки HW12
+- master добавлен в branches для travis
+- `terraform validate`, `tflint --error-with-issues` проверяют просто с переменными из `terraform.tfvars.example` вместо генерации `terraform.tfvars`
+- вместо тестирования сборок TravisCI в отдельном репозитории и потом переноса изменений в основной попробовал Trytravis. Создать тестовый репозиторий trytravis все равно нужно, но все изменения можно делать сразу в основном и проыерять без коммита. Тесты проходят, результат можно смотреть в интерфейсе TravisCI, но в консоли ошибка `Timed out while waiting for a Travis build to start`
+- конфигурация бекенда terraform stage и prod вынесена отдельно в backend.tf, которые перед тестами удаляются, чтобы travis не пытался ходить в gcp
+- в плейбуках прописал сразу группы для static и dynamic inventory в hosts. `app, tag_reddit-app`, `db, tag_reddit-db`
+- 80 порт в app модуле tf добавляется отдельным ресурсом firewall_http
+- почищены `.swp`, `.save`, добавлены в `.gitignore`
